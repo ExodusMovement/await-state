@@ -21,5 +21,6 @@
   "scripts": {
     "pre-commit": "yarn lint",
     "lint": "eslint --quiet --ignore-path .gitignore ."
-  }
+  },
+  "files": ["index.js"]
 }
