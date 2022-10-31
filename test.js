@@ -26,7 +26,7 @@ beforeEach(() => {
 
 test('awaitState waits for state to update', async () => {
   // queue up actions
-  setTimeout(() => store.dispatch({ type: 'TOGGLE_ENABLED' }), 1000)
+  setImmediate(() => store.dispatch({ type: 'TOGGLE_ENABLED' }))
 
   expect(store.getState().enabled).toBe(false)
   await awaitState(store, isEnabledSelector)
@@ -40,8 +40,10 @@ test('awaitState resolves immediately if the condition already exists', async ()
 
 test('awaitState ignores irrelevant updates', async () => {
   // queue up actions
-  setTimeout(() => store.dispatch({ type: 'OTHER_ACTION' }), 1000)
-  setTimeout(() => store.dispatch({ type: 'TOGGLE_ENABLED' }), 2000)
+  setImmediate(() => {
+    store.dispatch({ type: 'OTHER_ACTION' })
+    setImmediate(() => store.dispatch({ type: 'TOGGLE_ENABLED' }))
+  })
 
   expect(store.getState().enabled).toBe(false)
   await awaitState(store, isEnabledSelector)
